@@ -102,6 +102,12 @@ print(haze_degree)
 
 
 ## ----process-series-data, fig.height=5, fig.width=8----------------------
+# to download via R
+dir.create('data')
+destfile = 'data/pointreyes.zip'
+download.file(destfile = destfile, mode = 'wb', url = 'http://bit.ly/2F8w2Ia')
+unzip(destfile, exdir = 'data')  
+
 
 # set up the input image directory
 #pointreyes_dir <- '/path/to/image/directory/'
@@ -115,7 +121,6 @@ pointreyes_images <- dir(path = pointreyes_dir,
 
 
 ## ----process-series-loop, fig.height=5, fig.width=8----------------------
-
 
 # number of images
 n <- length(pointreyes_images)
@@ -140,6 +145,8 @@ for(i in 1:n) {
 }
 
 ## ----plot-foggy-clear, fig.height=10, fig.width=8, message=FALSE, eval=TRUE----
+haze_mat[,haze:=unlist(haze)]
+
 top10_high_haze <-  haze_mat[order(haze), file][1:5]
 top10_low_haze <-  haze_mat[order(-haze), file][1:5]
 
@@ -153,9 +160,9 @@ for(i in 1:5){
   img <- readJPEG(top10_high_haze[i])
   plot(0:1,0:1, type='n', axes= FALSE, xlab= '', ylab = '')
   rasterImage(img, 0, 0, 1, 1)
-
 }
-mtext('Seasonal variation of forest at Duke Hardwood Forest', font = 2, outer = TRUE)
+
+mtext('Separating out foggy images of Point Reyes, CA', font = 2, outer = TRUE)
 
 
 ## ----process-series-classify, fig.height=5, fig.width=8------------------
